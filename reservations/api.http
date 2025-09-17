@@ -1,0 +1,25 @@
+### 
+POST http://localhost:8000/api/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+	"username": "admin",
+	"password": "admin123"
+}
+
+###
+GET http://localhost:8000/reserve/ HTTP/1.1
+
+###
+GET http://localhost:8000/location/ HTTP/1.1
+
+###
+POST http://localhost:8000/reserve/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU4MTE2NzUzLCJpYXQiOjE3NTgxMTY0NTMsImp0aSI6ImZiMWFkMDM0ZTdiZDQ4ZjA5NDM0ZTA3YjQwN2U2MDI1IiwidXNlcl9pZCI6IjEifQ.UPkYUDKrdAAOe5MpVDrIu1KPC5QiQ3ZP0uG-wfGT_7Q
+
+{
+    "location_id": "3",
+    "start_date": "2025-09-18",
+    "end_date": "2025-09-20"
+}
