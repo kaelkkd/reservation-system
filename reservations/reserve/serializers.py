@@ -12,7 +12,7 @@ class LocationSerializer(serializers.ModelSerializer):
             'capacity'
         )
     
-    def validate_capacity(self, value):
+    def validate(self, value):
         if value <= 0:
             raise serializers.ValidationError("Capacity must be greater than 0.")
         return value
@@ -33,6 +33,14 @@ class ReservationSerializer(serializers.ModelSerializer):
             'end_date',
             'reserved_at'
         )
+
+    def validate(self, attrs):
+        start = attrs.get("start_date")
+        end = attrs.get("end_date")
+        if start >= end:
+            raise serializers.ValidationError("end_date date must be after the start_date.")  
+        
+        return attrs      
 
 
 
