@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'silk',
     'users',
     'reserve',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -131,5 +132,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Property reservation API',
+    'DESCRIPTION': 'An API for reservation of rooms, houses and buildings',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
