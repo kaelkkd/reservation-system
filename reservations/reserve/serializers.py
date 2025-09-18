@@ -14,7 +14,7 @@ class LocationSerializer(serializers.ModelSerializer):
     
     def validate(self, value):
         if value <= 0:
-            raise serializers.ValidationError("Capacity must be greater than 0.")
+            raise serializers.ValidationError({"capacity": "The capacity must be at least 1."})
         return value
     
 class ReservationSerializer(serializers.ModelSerializer):
@@ -22,6 +22,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     reserved_at = serializers.CharField(source="created_at", read_only=True)
     location = LocationSerializer(read_only=True)
     location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all(), source="location", write_only=True)
+    number_of_people = serializers.IntegerField(source="num_people")
 
     class Meta:
         model = Reservation
@@ -31,14 +32,25 @@ class ReservationSerializer(serializers.ModelSerializer):
             'location_id',
             'start_date',
             'end_date',
-            'reserved_at'
+            'reserved_at',
+            'number_of_people'
         )
 
     def validate(self, attrs):
+        location = attrs.get("location")
         start = attrs.get("start_date")
         end = attrs.get("end_date")
+        num_people = attrs.get("num_people")
+
         if start >= end:
-            raise serializers.ValidationError("end_date date must be after the start_date.")  
+            raise serializers.ValidationError({"end_date": "End date must be after start date."})  
+        
+        overlaps = Reservation.objects.filter(location=location, start_date__lt=end, end_date__gt=start,).exists()
+        if overlaps > 0:
+            raise serializers.ValidationError({"non_fiel_errors": "Location not available at the selected date."})
+        
+        if num_people > location.capacity:
+            raise serializers.ValidationError({"number_of_people": "The location cannot acommodate that many people."})
         
         return attrs      
 
