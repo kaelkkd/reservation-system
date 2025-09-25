@@ -4,12 +4,24 @@ from .filters import LocationFilter
 from .serializers import LocationSerializer, ReservationSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.order_by('pk')
     serializer_class = LocationSerializer
     filterset_class = LocationFilter
     filter_backends = [DjangoFilterBackend]
+
+    @method_decorator(cache_page(60 * 15, key_prefix='location_list'))
+    def list(seld, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        import time
+        time.sleep(2)
+        return super().get_queryset()
 
     def get_permissions(self):
         self.permission_classes = [AllowAny]
