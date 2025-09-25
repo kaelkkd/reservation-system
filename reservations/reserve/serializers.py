@@ -24,11 +24,13 @@ class ReservationSerializer(serializers.ModelSerializer):
     location = LocationSerializer(read_only=True)
     location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all(), source="location", write_only=True)
     number_of_people = serializers.IntegerField(source="num_people")
+    user = serializers.PrimaryKeyRelatedField(source="reserved_by", read_only=True)
 
     class Meta:
         model = Reservation
         fields = (
             'reservation_id',
+            'user',
             'location',
             'location_id',
             'start_date',
@@ -36,6 +38,10 @@ class ReservationSerializer(serializers.ModelSerializer):
             'reserved_at',
             'number_of_people'
         )
+
+    def create(self, validated_data):
+        validated_data["reserved_by"] = self.context["request"].user
+        return super().create(validated_data)
 
     def validate(self, attrs):
         location = attrs.get("location")
