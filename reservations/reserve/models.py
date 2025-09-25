@@ -22,6 +22,7 @@ class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     start_date = models.DateField(blank=False)
     end_date = models.DateField(blank=False)
+    num_people = models.IntegerField(validators=[MaxValueValidator(15)], blank=False)
 
     def __str__(self):
         return f"{self.location} reserved from {self.start_date} to {self.end_date}."

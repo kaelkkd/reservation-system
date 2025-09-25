@@ -1,9 +1,12 @@
 from django.urls import path
 from . import views
+from rest_framework import routers
 
 urlpatterns = [
-    path('location/', views.LocationListCreateAPIView.as_view()),
-    path('location/info/', views.LocationDetailAPIView.as_view()),
     path('reserve/', views.ReservationListCreateAPIView.as_view()),
-    path('reserve/info/', views.ReservationDetailAPIView.as_view()),
+    path('reserve/info/<uuid:reservation_id>/', views.ReservationDetailAPIView.as_view()),
 ]
+
+router = routers.DefaultRouter()
+router.register('locations', views.LocationViewSet)
+urlpatterns += router.urls
