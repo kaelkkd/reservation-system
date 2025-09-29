@@ -147,12 +147,12 @@ python manage.py test
 
 ## Roadmap
 
-* [ ] Add automated test
+* [x] Add automated tests
+* [x] Add user roles & permissions (admin vs normal user)
+* [x] Reservation conflict checks
 * [ ] Switch database to PostgreSQL
-* [ ] Add user roles & permissions (admin vs normal user)
-* [ ] Reservation conflict checks
 * [ ] Extend Swagger docs with examples
-* [ ] Add a React frotend
+* [ ] Add a React frotnend
 
 
 
