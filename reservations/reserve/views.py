@@ -15,7 +15,7 @@ class LocationViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
 
     @method_decorator(cache_page(60 * 15, key_prefix='location_list'))
-    def list(seld, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
     
     def get_queryset(self):
@@ -24,9 +24,10 @@ class LocationViewSet(viewsets.ModelViewSet):
         return super().get_queryset()
 
     def get_permissions(self):
-        self.permission_classes = [AllowAny]
-        if self.request.method == ["PUT", "PATCH", "DELETE"]:
+        if self.request.method in ["PUT", "PATCH", "DELETE"]:
             self.permission_classes = [IsAdminUser]
+        else:
+            self.permission_classes = [AllowAny]
 
         return super().get_permissions()
     
