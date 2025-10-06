@@ -8,3 +8,4 @@ drf-spectacular==0.28.0
 django-filter==25.1
 redis[hiredis]==6.4.0
 django-redis==6.0.0
+django.cors.headers==4.9.0
