@@ -23,6 +23,7 @@ Currently, it runs on an SQLite database (default development setup).
 * [Django REST Framework](https://www.django-rest-framework.org/)
 * [djangorestframework-simplejwt](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/)
 * [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/)
+* [React](https://react.dev/)
 * [Redis](https://redis.io/) (for caching)
 * [SQLite](https://www.sqlite.org/) (default DB)
 
@@ -63,6 +64,19 @@ docker run --name django-redis -d -p 6379:6379 redis
 
 ```bash
 python manage.py runserver
+```
+
+### 6. Install front end dependencies
+
+```bash
+cd cd reservation-system/frontend
+npm install
+```
+
+### 6. Start the front end server
+
+```bash
+npm run dev
 ```
 
 ---
@@ -147,12 +161,13 @@ python manage.py test
 
 ## Roadmap
 
-* [ ] Add automated test
+* [x] Add automated tests
+* [x] Add user roles & permissions (admin vs normal user)
+* [x] Reservation conflict checks
+* [x] Add a React frotnend
 * [ ] Switch database to PostgreSQL
-* [ ] Add user roles & permissions (admin vs normal user)
-* [ ] Reservation conflict checks
 * [ ] Extend Swagger docs with examples
-* [ ] Add a React frotend
+
 
 
 

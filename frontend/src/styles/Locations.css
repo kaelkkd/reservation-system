@@ -1,0 +1,71 @@
+.page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.page-head h1 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.loc__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loc__name {
+    font-weight: 600;
+}
+
+.loc__cap {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+.loc__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loc__country {
+    color: var(--muted);
+}
+
+.loc__addr {
+    color: var(--text);
+    opacity: .95;
+}
+
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.skeleton-card {
+    border-radius: 14px;
+    height: 140px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .08), rgba(255, 255, 255, .05));
+    animation: shimmer 1.4s infinite;
+    background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}

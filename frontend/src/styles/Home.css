@@ -1,0 +1,83 @@
+.home-hero {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 24px;
+}
+
+.hero-copy h1 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+}
+
+.hero-copy p {
+    margin: 0 0 14px;
+    color: var(--muted);
+}
+
+.hero-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.hero-card {
+    align-self: stretch;
+}
+
+.home-grid {
+    display: grid;
+    grid-template-columns: 1.3fr .7fr;
+    gap: 20px;
+}
+
+.quick-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.quick-link {
+    display: block;
+    padding: 10px 0;
+    color: var(--text);
+}
+
+.quick-link:hover {
+    text-decoration: underline;
+}
+
+.card-link {
+    color: var(--muted);
+}
+
+.card-link:hover {
+    color: var(--text);
+}
+
+.loc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.loc-item {
+    display: grid;
+    gap: 4px;
+    padding: 6px 2px;
+    border-bottom: 1px solid var(--border);
+}
+
+.loc-name {
+    font-weight: 600;
+}
+
+.loc-meta {
+    color: var(--muted);
+}
+
+.muted {
+    color: var(--muted);
+}
