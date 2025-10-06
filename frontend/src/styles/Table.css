@@ -1,0 +1,33 @@
+.table {
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 640px;
+}
+
+th, td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+thead th {
+    font-weight: 600;
+    color: var(--muted);
+    background: rgba(255, 255, 255, .02);
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, .03);
+}
+
+.table__empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 18px;
+}

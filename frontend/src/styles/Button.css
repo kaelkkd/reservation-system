@@ -1,0 +1,38 @@
+.btn {
+    border: 1px solid transparent;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--text);
+    transition: .2s ease;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn--primary {
+    background: var(--primary);
+    color: var(--primary-contrast);
+}
+
+.btn--primary:hover {
+    filter: brightness(1.05);
+}
+
+.btn--ghost {
+    background: transparent;
+    border-color: var(--border);
+}
+
+.btn--danger {
+    background: var(--danger);
+    color: #fff;
+}
