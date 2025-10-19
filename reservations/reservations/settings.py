@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'silk',
-    'users',
+    'users.apps.UsersConfig',
     'reserve',
     'drf_spectacular',
     'django_filters',

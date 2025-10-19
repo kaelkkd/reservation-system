@@ -1,4 +1,4 @@
-from .models import User, Profile
+from .models import User, Profile, CountryChoices
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -60,3 +60,39 @@ class RegisterSerializer(serializers.ModelSerializer):
         }
 
         return data
+    
+class ProfileSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(source="user.id", read_only=True) #considerar
+    email = serializers.EmailField(source="user.email", read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = [
+            "user_id",
+            "display_name",
+            "email",
+            "address_line",
+            "country",
+            "bio",
+            "created_at",
+            "updated_at",
+        ]
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    country = serializers.ChoiceField(choices=CountryChoices.choices, required=False)
+    address_line = serializers.CharField(required=False)
+    display_name = serializers.CharField(required=False)
+    bio = serializers.CharField(required=False)
+    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = [
+            "country",
+            "address_line",
+            "display_name",
+            "bio",
+            "updated_at",
+        ]
