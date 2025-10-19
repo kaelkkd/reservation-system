@@ -45,20 +45,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 class CountryChoices(models.TextChoices):
-    BR = 'Brazil',
-    US = 'United States',
-    UK = 'United Kingdom',
-    JP = 'Japan'
+    BR = "BR", "Brazil"
+    US = "US", "United States"
+    UK = "UK", "United Kingdom"
+    ES = "ES", "Spain"
+    JP = "JP", "Japan"
+    AU = "AU", "Australia"
+
 
 class Profile(models.Model):
     account = models.OneToOneField("User", null=True, blank=True, on_delete=models.CASCADE, related_name='profile')
-    display_name = models.CharField(max_length=200)
+    display_name = models.CharField(max_length=80)
     phone_number = models.CharField(max_length=20)
-    email = models.EmailField(max_length=254, unique=True)
+    email = models.EmailField(max_length=100, unique=True)
     address_line = models.CharField(max_length=250, blank=True)
-    country_code = models.CharField(choices=CountryChoices.choices, default=CountryChoices.BR)
-    is_email_verified = models.BooleanField(default=False)
-    is_phone_verified = models.BooleanField(default=False)
+    country = models.CharField(choices=CountryChoices.choices, default=CountryChoices.BR)
+    bio = models.CharField(max_length=300, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
