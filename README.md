@@ -88,9 +88,9 @@ The API uses **JWT** authentication.
 ### Obtain token
 
 ```http
-POST /api/token/ HTTP/1.1
+POST /api/login/ HTTP/1.1
 {
-  "username": "your_username",
+  "umail": "your_email",
   "password": "your_password"
 }
 ```
@@ -98,7 +98,7 @@ POST /api/token/ HTTP/1.1
 ### Refresh token
 
 ```http
-POST /api/token/refresh/ HTTP/1.1
+POST /api/login/refresh/ HTTP/1.1
 {
   "refresh": "your_refresh_token"
 }
@@ -121,6 +121,18 @@ Once the server is running, you can access interactive Swagger documentation at:
 ---
 
 ## Example Endpoints
+
+### Profiles
+* `GET /api/profiles/me` → returns user profile
+* `PUT /api/profiles/me` → update the user profile
+  ```json
+  {
+    "country": "UK",
+    "address_line": "Main Avenue, 112",
+    "display_name": "UK User",
+    "bio": "First user from the UK!"
+  }
+  ```
 
 ### Locations
 
