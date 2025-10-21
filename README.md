@@ -70,11 +70,11 @@ python manage.py runserver
 
 ### 6. Start Celery 
 ```bash
-celery -A reservation worker --loglevel=INFO
+celery -A reservations worker --loglevel=INFO
 ```
 If on Windows and the OS deny the acess
 ```bash
-celery -A reservation worker --pool=solo -l info
+celery -A reservations worker --pool=solo -l info
 ```
 
 ### 7. Install front end dependencies
@@ -101,7 +101,7 @@ The API uses **JWT** authentication.
 ```http
 POST /api/login/ HTTP/1.1
 {
-  "umail": "your_email",
+  "email": "your_email",
   "password": "your_password"
 }
 ```
