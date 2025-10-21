@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-
+from .tasks import send_reservation_confirmation
 
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.order_by('pk')
@@ -41,7 +41,8 @@ class ReservationListCreateAPIView(generics.ListCreateAPIView):
         return queryset if user.is_staff else queryset.filter(reserved_by=user)
             
     def perform_create(self, serializer):
-        serializer.save(reserved_by=self.request.user)
+        reservation = serializer.save(reserved_by=self.request.user)
+        send_reservation_confirmation.delay(reservation.reservation_id, self.request.user.email)
     
 class ReservationDetailAPIView(generics.RetrieveDestroyAPIView):
     serializer_class = ReservationSerializer

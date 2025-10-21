@@ -11,6 +11,7 @@ Currently, it runs on an SQLite database (default development setup).
 * **JWT Authentication** for secure login and access
 * **Reservation management** (create, list, filter by user)
 * **Location caching** with Redis for faster responses
+* **Celery** for task queuing (in the moment, is set to only display the emails on terminal)
 * **Interactive Swagger docs** (auto-generated API documentation)
 * **Django Admin panel** for easy management
 * **SQLite** database for development (will be changed to PostgreSQL soon)
@@ -25,6 +26,7 @@ Currently, it runs on an SQLite database (default development setup).
 * [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/)
 * [React](https://react.dev/)
 * [Redis](https://redis.io/) (for caching)
+* [Celery](https://docs.celeryq.dev/)
 * [SQLite](https://www.sqlite.org/) (default DB)
 
 ---
@@ -66,14 +68,23 @@ docker run --name django-redis -d -p 6379:6379 redis
 python manage.py runserver
 ```
 
-### 6. Install front end dependencies
+### 6. Start Celery 
+```bash
+celery -A reservations worker --loglevel=INFO
+```
+If on Windows and the OS deny the acess
+```bash
+celery -A reservations worker --pool=solo -l info
+```
+
+### 7. Install front end dependencies
 
 ```bash
 cd cd reservation-system/frontend
 npm install
 ```
 
-### 6. Start the front end server
+### 8. Start the front end server
 
 ```bash
 npm run dev
@@ -88,9 +99,9 @@ The API uses **JWT** authentication.
 ### Obtain token
 
 ```http
-POST /api/token/ HTTP/1.1
+POST /api/login/ HTTP/1.1
 {
-  "username": "your_username",
+  "email": "your_email",
   "password": "your_password"
 }
 ```
@@ -98,7 +109,7 @@ POST /api/token/ HTTP/1.1
 ### Refresh token
 
 ```http
-POST /api/token/refresh/ HTTP/1.1
+POST /api/login/refresh/ HTTP/1.1
 {
   "refresh": "your_refresh_token"
 }
@@ -121,6 +132,18 @@ Once the server is running, you can access interactive Swagger documentation at:
 ---
 
 ## Example Endpoints
+
+### Profiles
+* `GET /api/profiles/me` → returns user profile
+* `PUT /api/profiles/me` → update the user profile
+  ```json
+  {
+    "country": "UK",
+    "address_line": "Main Avenue, 112",
+    "display_name": "UK User",
+    "bio": "First user from the UK!"
+  }
+  ```
 
 ### Locations
 
