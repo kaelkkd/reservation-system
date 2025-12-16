@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
+import { BsPersonCircle, BsArrowBarRight  } from "react-icons/bs";
 import "../styles/Layout.css"
 import React from 'react'
 
@@ -15,7 +16,7 @@ function Layout({ children }) {
                 <nav className="nav__links">
                     <Link className={pathname.startsWith("/locations") ? "active": ""} to="/locations">Locations</Link>
                     <Link className={pathname.startsWith("/reservations") ? "active": ""} to="/reservations">My reservations</Link>
-                    <Link className={pathname.startsWith("/logout") ? "active" : ""} to="/logout">Logout</Link>
+                    <Link className={pathname.startsWith("/logout") ? "active" : ""} to="/logout"><BsArrowBarRight/></Link>
                 </nav>
             </header>
 
