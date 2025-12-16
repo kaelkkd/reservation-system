@@ -84,7 +84,14 @@ cd cd reservation-system/frontend
 npm install
 ```
 
-### 8. Start the front end server
+### 8. Set up the Vite url
+
+Create a **.env** containing the desired URL. The following is recommended
+```
+VITE_API_URL="http://<YOUR_LOCAL_HOST>:8000"
+```
+
+### 9. Start the front end server
 
 ```bash
 npm run dev
