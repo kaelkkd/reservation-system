@@ -1,8 +1,9 @@
 # Reservation API
 
 A RESTful API for managing reservations of rooms, places, and buildings.
-The API is built with Django REST Framework, supports JWT authentication, uses Redis caching for location data, and comes with an interactive Swagger documentation.
-Currently, it runs on an SQLite database (default development setup).
+
+The API is built with Django REST Framework, supports JWT authentication, uses Redis for caching, Celery for background tasks, and provides interactive Swagger documentation.
+At the moment, the default development database is SQLite (with plans to migrate to PostgreSQL).
 
 ---
 
@@ -11,10 +12,11 @@ Currently, it runs on an SQLite database (default development setup).
 * **JWT Authentication** for secure login and access
 * **Reservation management** (create, list, filter by user)
 * **Location caching** with Redis for faster responses
-* **Celery** for task queuing (in the moment, is set to only display the emails on terminal)
-* **Interactive Swagger docs** (auto-generated API documentation)
-* **Django Admin panel** for easy management
-* **SQLite** database for development (will be changed to PostgreSQL soon)
+* **Celery** for background task processing
+  *(currently configured to display emails in the terminal)*
+* **Interactive Swagger docs**
+* **Django Admin panel**
+* **SQLite** database for development
 
 ---
 
@@ -25,30 +27,38 @@ Currently, it runs on an SQLite database (default development setup).
 * [djangorestframework-simplejwt](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/)
 * [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/)
 * [React](https://react.dev/)
-* [Redis](https://redis.io/) (for caching)
+* [Redis](https://redis.io/) (caching)
 * [Celery](https://docs.celeryq.dev/)
 * [SQLite](https://www.sqlite.org/) (default DB)
 
 ---
 
-## Installation
+## Installation (using `uv`)
+
+> This project uses **[`uv`](https://github.com/astral-sh/uv)** for dependency management and virtual environments.
 
 ### 1. Clone the repository
 
 ```bash
 git clone https://github.com/kaelkkd/reservation-system
-cd reservation-system/reservation
+cd reservation-system/reservations
 ```
 
-### 2. Create a virtual environment & install dependencies
+---
+
+### 2. Create a virtual environment and install dependencies
 
 ```bash
-python -m venv venv
-source venv/bin/activate   # Linux/macOS
-venv\Scripts\activate      # Windows
+uv venv
+source .venv/bin/activate   #Linux and macOS
+# .venv\Scripts\Activate.ps1  # Windows (PowerShell)
 
-pip install -r requirements.txt
+uv pip install -e .
 ```
+
+This installs the project in editable mode, along with all dependencies defined in `pyproject.toml`.
+
+---
 
 ### 3. Run migrations
 
@@ -56,11 +66,15 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
+---
+
 ### 4. Start Redis (Docker example)
 
 ```bash
 docker run --name django-redis -d -p 6379:6379 redis
 ```
+
+---
 
 ### 5. Start the development server
 
@@ -68,30 +82,44 @@ docker run --name django-redis -d -p 6379:6379 redis
 python manage.py runserver
 ```
 
-### 6. Start Celery 
+---
+
+### 6. Start Celery
+
 ```bash
 celery -A reservations worker --loglevel=INFO
 ```
-If on Windows and the OS deny the acess
+
+If you are on Windows and the OS blocks multiprocessing:
+
 ```bash
 celery -A reservations worker --pool=solo -l info
 ```
 
-### 7. Install front end dependencies
+---
+
+## Frontend Setup
+
+### 7. Install frontend dependencies
 
 ```bash
-cd cd reservation-system/frontend
+cd reservation-system/frontend
 npm install
 ```
 
-### 8. Set up the Vite url
+---
 
-Create a **.env** containing the desired URL. The following is recommended
-```
-VITE_API_URL="http://<YOUR_LOCAL_HOST>:8000"
+### 8. Configure the API URL
+
+Create a `.env` file in the frontend directory:
+
+```env
+VITE_API_URL="http://localhost:8000"
 ```
 
-### 9. Start the front end server
+---
+
+### 9. Start the frontend server
 
 ```bash
 npm run dev
@@ -101,12 +129,12 @@ npm run dev
 
 ## Authentication
 
-The API uses **JWT** authentication.
+The API uses JWT authentication.
 
 ### Obtain token
 
 ```http
-POST /api/login/ HTTP/1.1
+POST /api/login/
 {
   "email": "your_email",
   "password": "your_password"
@@ -116,7 +144,7 @@ POST /api/login/ HTTP/1.1
 ### Refresh token
 
 ```http
-POST /api/login/refresh/ HTTP/1.1
+POST /api/login/refresh/
 {
   "refresh": "your_refresh_token"
 }
@@ -132,52 +160,62 @@ Authorization: Bearer <access_token>
 
 ## API Documentation
 
-Once the server is running, you can access interactive Swagger documentation at:
+Once the backend server is running:
 
-* Swagger UI: [http://localhost:8000/swagger/](http://localhost:8000/swagger/)
+* Swagger UI:
+[http://localhost:8000/swagger/](http://localhost:8000/swagger/)
 
 ---
 
 ## Example Endpoints
 
 ### Profiles
-* `GET /api/profiles/me` → returns user profile
-* `PUT /api/profiles/me` → update the user profile
-  ```json
-  {
-    "country": "UK",
-    "address_line": "Main Avenue, 112",
-    "display_name": "UK User",
-    "bio": "First user from the UK!"
-  }
-  ```
+
+* `GET /api/profiles/me` → retrieve user profile
+* `PUT /api/profiles/me` → update profile
+
+```json
+{
+  "country": "UK",
+  "address_line": "Main Avenue, 112",
+  "display_name": "UK User",
+  "bio": "First user from the UK!"
+}
+```
+
+---
 
 ### Locations
 
 * `GET /api/locations/` → list all locations
-* `GET /api/locations/{id}/` → retrieve location details (cached in Redis)
+* `GET /api/locations/{id}/` → retrieve location details
+  *(cached using Redis)*
+
+---
 
 ### Reservations
 
 * `GET /api/reservations/` → list user reservations
 * `POST /api/reservations/` → create a reservation
 
-  ```json
-  {
-    "location_id": 1,
-    "start_date": "2025-10-01",
-    "end_date": "2025-10-02",
-    "number_of_people": 5
-  }
-  ```
+```json
+{
+  "location_id": 1,
+  "start_date": "2025-10-01",
+  "end_date": "2025-10-02",
+  "number_of_people": 5
+}
+```
+
 * `DELETE /api/reservations/{id}/` → cancel a reservation
 
 ---
 
 ## Admin Panel
 
-The project includes the default Django admin interface.
-Access it at: [http://localhost:8000/admin/](http://localhost:8000/admin/)
+The project includes Django’s built-in admin interface:
+
+[http://localhost:8000/admin/](http://localhost:8000/admin/)
 
 ---
 
@@ -191,13 +229,10 @@ python manage.py test
 
 ## Roadmap
 
-* [x] Add automated tests
-* [x] Add user roles & permissions (admin vs normal user)
+* [x] Automated tests
+* [x] User roles & permissions
 * [x] Reservation conflict checks
-* [x] Add a React frotnend
+* [x] React frontend
 * [ ] Switch database to PostgreSQL
-* [ ] Extend Swagger docs with examples
-
-
-
+* [ ] Extend Swagger documentation with examples
 
