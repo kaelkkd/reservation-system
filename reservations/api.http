@@ -8,18 +8,68 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/reserve/ HTTP/1.1
-
-###
-GET http://localhost:8000/location/ HTTP/1.1
-
-###
 POST http://localhost:8000/reserve/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU4MTE2NzUzLCJpYXQiOjE3NTgxMTY0NTMsImp0aSI6ImZiMWFkMDM0ZTdiZDQ4ZjA5NDM0ZTA3YjQwN2U2MDI1IiwidXNlcl9pZCI6IjEifQ.UPkYUDKrdAAOe5MpVDrIu1KPC5QiQ3ZP0uG-wfGT_7Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxMDAyNTU2LCJpYXQiOjE3NjA5OTg5NTYsImp0aSI6ImM3MjE1YTU0Y2MyOTRkMjZhN2RhZjE5MDQ0ZTQ4YWFmIiwidXNlcl9pZCI6IjEiLCJlbWFpbCI6InVzZXJAbWFpbC5jb20iLCJpc19zdGFmZiI6ZmFsc2V9.NRs4jwDdj1n1AgFf3PLNL1OpvPkiSKtZP7Xkt6nN2p8
 
 {
-    "location_id": "3",
-    "start_date": "2025-09-18",
-    "end_date": "2025-09-20"
+	"location_id": "1",
+	"start_date": "2025-11-01",
+	"end_date": "2025-11-10",
+	"number_of_people": "3"
+}
+###
+GET http://localhost:8000/locations/ HTTP/1.1
+
+###
+DELETE http://localhost:8000/reserve/info/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU4ODAwNTgyLCJpYXQiOjE3NTg4MDAyODIsImp0aSI6IjNjZjMwYWM1ZWU4ZDQwOTk5YjgxZjM3OTM3YjVkYjQ5IiwidXNlcl9pZCI6IjEifQ.yzTUC2-SYeseu3lj6iLnsg3OaHAc4v8Y3J_C0-wIPsg
+
+###
+GET http://localhost:8000/reserve/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU4ODE5NjYzLCJpYXQiOjE3NTg4MTkzNjMsImp0aSI6ImVhZDVlMmU2MzEwMDRiZTZiN2MyM2I3ZTM0YmE5ZTBkIiwidXNlcl9pZCI6IjEifQ.HLYYUgt6kawoXrkYq89TvGbYWsPRHHDPR2SuIX0wHRg
+
+
+###############################################################################################################
+
+###
+POST http://localhost:8000/api/register/ HTTP/1.1
+Content-Type: application/json
+
+{
+	"email": "testmail2@mail.com",
+	"password": "password",
+	"password2": "password",
+	"first_name": "name one",
+	"last_name": "name two"
+}
+
+
+###
+POST http://localhost:8000/api/login/ HTTP/1.1
+Content-Type: application/json
+
+{
+	"email": "user@mail.com",
+	"password": "password"
+}
+
+###
+
+GET http://localhost:8000/api/profiles/me/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODk1MjE4LCJpYXQiOjE3NjA4OTE2MTgsImp0aSI6IjE2NmQ4YmZiNWVmMzRlN2Y4MGVkNDJkMDQ2YjM1YjNiIiwidXNlcl9pZCI6IjEiLCJlbWFpbCI6InVzZXJAbWFpbC5jb20iLCJpc19zdGFmZiI6ZmFsc2V9.gBhunGK8JuA62O6qf6XlIs-BZrxNpmkIdsr4oeVIMDI
+
+###
+
+PUT http://localhost:8000/api/profiles/me/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODk1NTcxLCJpYXQiOjE3NjA4OTE5NzEsImp0aSI6ImNkZTFiZjc3N2FjMTRiYzI5Mzc1M2RiNTExODdlMWFlIiwidXNlcl9pZCI6IjEiLCJlbWFpbCI6InVzZXJAbWFpbC5jb20iLCJpc19zdGFmZiI6ZmFsc2V9.OwyN6593VQhUShRjELEpuLyQPEq8Sh6LMc_ceh9G-xw
+
+{
+	"country": "UK",
+	"address_line": "Main Avenue, 112",
+	"display_name": "First User",
+	"bio": "First user of the system!"
 }
