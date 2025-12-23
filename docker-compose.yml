@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: 
+      context: ./reservations
+    env_file:
+      - ./reservations/.env
+    container_name: reservations-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - celery
+    
+  frontend:
+    build: ./frontend
+    ports: 
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:8000
+    command: npm run dev -- --host 0.0.0.0
+    depends_on:
+      - backend
+
+  redis:
+    image: redis:7
+    container_name: reservations-redis
+    ports:
+      - "6379:6379"
+    
+  celery:
+    build: 
+      context: ./reservations
+    container_name: reservations-celery
+    command: celery -A reservations worker --pool=solo -l info
