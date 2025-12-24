@@ -30,10 +30,39 @@ At the moment, the default development database is SQLite (with plans to migrate
 * [Redis](https://redis.io/) (caching)
 * [Celery](https://docs.celeryq.dev/)
 * [SQLite](https://www.sqlite.org/) (default DB)
+* [Docker](https://www.docker.com/)
 
 ---
 
-## Installation (using `uv`)
+## Using with Docker (recommended)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/kaelkkd/reservation-system
+cd reservation-system/reservations
+```
+
+### 2. Setting up the containers
+With Docker and compose installed, run
+```bash
+docker compose up -d --build
+```
+
+Once the containers are running, you can access:
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
+- Swagger UI: http://localhost:8000/swagger/
+- Admin panel: http://localhost:8000/admin/
+
+The Docker setup runs the following services:
+- Django backend
+- Celery worker
+- Redis
+- React frontend
+
+## Running locally (using `uv`)
 
 > This project uses **[`uv`](https://github.com/astral-sh/uv)** for dependency management and virtual environments.
 
@@ -43,6 +72,7 @@ At the moment, the default development database is SQLite (with plans to migrate
 git clone https://github.com/kaelkkd/reservation-system
 cd reservation-system/reservations
 ```
+After cloning, create a `.env` file based on `.env.example`.
 
 ---
 
@@ -68,7 +98,8 @@ python manage.py migrate
 
 ---
 
-### 4. Start Redis (Docker example)
+### 4. Start Redis with Docker (required for cache and celery)
+Celery also uses Redis as a message broker, therefore redis must be running before starting Celery.
 
 ```bash
 docker run --name django-redis -d -p 6379:6379 redis

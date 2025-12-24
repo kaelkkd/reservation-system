@@ -160,7 +160,7 @@ SPECTACULAR_SETTINGS = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": config("REDIS_URL"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -180,6 +180,6 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 #celery and and caching using the same url
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/1",
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
