@@ -194,7 +194,7 @@ Authorization: Bearer <access_token>
 Once the backend server is running:
 
 * Swagger UI:
-[http://localhost:8000/swagger/](http://localhost:8000/swagger/)
+[http://localhost:8000/api/schema/swagger-ui/](http://localhost:8000/api/schema/swagger-ui/)
 
 ---
 
