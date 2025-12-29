@@ -1,6 +1,4 @@
 from .models import User, Profile
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework import generics
 from .serializers import RegisterSerializer, CustomObtainPairSerializer, ProfileSerializer, ProfileUpdateSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -31,13 +29,3 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     
     def get_object(self):
         return generics.get_object_or_404(Profile, account=self.request.user)
-    
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        if hasattr(user, "profile"):
-            return Response({"detail": "Profile already exists."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        profile = Profile.objects.create(account=user)
-        serializer = ProfileSerializer(profile)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
