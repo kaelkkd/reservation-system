@@ -16,6 +16,7 @@ function Layout({ children }) {
                 <nav className="nav__links">
                     <Link className={pathname.startsWith("/locations") ? "active": ""} to="/locations">Locations</Link>
                     <Link className={pathname.startsWith("/reservations") ? "active": ""} to="/reservations">My reservations</Link>
+                    <Link className={pathname.startsWith("/profiles/me") ? "active" : ""} to="/profiles/me">My profile</Link>
                     <Link className={pathname.startsWith("/logout") ? "active" : ""} to="/logout"><BsArrowBarRight/></Link>
                 </nav>
             </header>
