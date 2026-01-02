@@ -62,8 +62,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
     
 class ProfileSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(source="user.id", read_only=True) #considerar
-    email = serializers.EmailField(source="user.email", read_only=True)
+    user_id = serializers.IntegerField(source="account.id", read_only=True)
+    email = serializers.EmailField(source="account.email", read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
@@ -82,6 +82,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     country = serializers.ChoiceField(choices=CountryChoices.choices, required=False)
+    email = serializers.EmailField(source="account.email", read_only=True)
     address_line = serializers.CharField(required=False)
     display_name = serializers.CharField(required=False)
     bio = serializers.CharField(required=False)
@@ -91,6 +92,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         model = Profile
         fields = [
             "country",
+            "email",
             "address_line",
             "display_name",
             "bio",
