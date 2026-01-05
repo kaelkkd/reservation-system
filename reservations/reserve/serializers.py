@@ -56,11 +56,11 @@ class ReservationSerializer(ReservationValidationMixin, serializers.ModelSeriali
         
         return attrs      
 
-class UpdateReservationSerializer(ReservationValidationMixin, serializers.ModelSerializer):
+class ReservationUpdateSerializer(ReservationValidationMixin, serializers.ModelSerializer):
     reservation_id = serializers.UUIDField(read_only=True)
     reserved_at = serializers.CharField(source="created_at", read_only=True)
-    location = LocationSerializer(read_only=False)
-    location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all(), source="location", read_only=True)
+    location = LocationSerializer(read_only=True)
+    location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all(), source="location", write_only=True)
     number_of_people = serializers.IntegerField(source="num_people")
     user = serializers.PrimaryKeyRelatedField(source="reserved_by", read_only=True)
 
