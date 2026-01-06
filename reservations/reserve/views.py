@@ -3,7 +3,6 @@ from .models import Location, Reservation
 from .filters import LocationFilter
 from .serializers import LocationSerializer, ReservationSerializer, ReservationUpdateSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from .tasks import send_reservation_confirmation, send_cancellation_confirmation
@@ -12,7 +11,6 @@ class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.order_by('pk')
     serializer_class = LocationSerializer
     filterset_class = LocationFilter
-    filter_backends = [DjangoFilterBackend]
 
     @method_decorator(cache_page(60 * 15, key_prefix='location_list'))
     def list(self, request, *args, **kwargs):
