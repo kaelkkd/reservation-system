@@ -8,6 +8,7 @@ import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Profile from "./pages/Profile"
+import UpdateReservation from "./pages/UpdateReservation"
 
 function Logout() {
   localStorage.clear()
@@ -41,6 +42,7 @@ function App() {
         <Route path='/locations' element={<ProtectedRoute><Locations /></ProtectedRoute>} />
         <Route path='/reservations' element={<ProtectedRoute><Reservations /></ProtectedRoute>} />
         <Route path='/reservations/new' element={<ProtectedRoute><NewReservation /></ProtectedRoute>} />
+        <Route path='/reservations/:id/edit' element={<ProtectedRoute><UpdateReservation /></ProtectedRoute>} />
         <Route path='/*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -8,3 +8,10 @@ def send_reservation_confirmation(reservation_id, user_email):
     message = f"Your reservation with the ID {reservation_id} has been successfully created."
 
     return send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user_email])
+
+@shared_task
+def send_cancellation_confirmation(reservation_id, user_email):
+    subject = "Reservation Cancelled"
+    message = f"Your reservation with the ID {reservation_id} was sucessfully cancelled."
+
+    return send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user_email])

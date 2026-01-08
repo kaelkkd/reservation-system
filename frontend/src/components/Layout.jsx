@@ -9,15 +9,15 @@ function Layout({ children }) {
     return (
         <div className="layout">
             <header className="nav">
-                <div className="nav__brand">
+                <Link to="/" className="nav__brand">
                     <span className="brand__logo">RS</span>
                     <span className="brand__name">Reservation System</span>
-                </div>
+                </Link>
                 <nav className="nav__links">
                     <Link className={pathname.startsWith("/locations") ? "active": ""} to="/locations">Locations</Link>
                     <Link className={pathname.startsWith("/reservations") ? "active": ""} to="/reservations">My reservations</Link>
-                    <Link className={pathname.startsWith("/profiles/me") ? "active" : ""} to="/profiles/me">My profile</Link>
-                    <Link className={pathname.startsWith("/logout") ? "active" : ""} to="/logout"><BsArrowBarRight/></Link>
+                    <Link className={pathname.startsWith("/profiles/me") ? "active" : ""} to="/profiles/me"><BsPersonCircle /></Link>
+                    <Link className={pathname.startsWith("/logout") ? "active" : ""} to="/logout"><BsArrowBarRight /></Link>
                 </nav>
             </header>
 

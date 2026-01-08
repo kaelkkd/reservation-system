@@ -2,7 +2,7 @@ import api from "../api";
 
 export const listLocations = async (params) => {
     const { data } = await api.get('/locations/', { params });
-    return Array.isArray(data) ? data : (data.results || []);
+    return Array.isArray(data) ? data : data.results;
 }
 
 export const getLocation = async (id) => {
