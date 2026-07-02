@@ -5,4 +5,4 @@ class ReserveConfig(AppConfig):
     name = 'reserve'
 
     def ready(self):
-        from . import signals
+        pass

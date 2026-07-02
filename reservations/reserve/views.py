@@ -3,8 +3,6 @@ from .models import Location, Reservation
 from .filters import LocationFilter
 from .serializers import LocationSerializer, ReservationSerializer, ReservationUpdateSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from .tasks import send_reservation_confirmation, send_cancellation_confirmation
 
