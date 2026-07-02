@@ -26,5 +26,16 @@ include = ["reservations", "reservations.*", "users", "reserve"]
 
 [dependency-groups]
 dev = [
+    "factory-boy>=3.3.3",
+    "flake8>=7.3.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-django>=4.12.0",
     "ruff>=0.14.10",
 ]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "reservations.settings"
+python_files = ["test_*.py"]
+testpaths = ["reservations"]
+addopts = "--reuse-db"
