@@ -14,10 +14,6 @@ class LocationSerializer(serializers.ModelSerializer):
             'capacity'
         )
     
-    def validate(self, value):
-        if value <= 0:
-            raise serializers.ValidationError({"capacity": "The capacity must be at least 1."})
-        return value
     
 class ReservationSerializer(ReservationValidationMixin, serializers.ModelSerializer):
     reservation_id = serializers.UUIDField(read_only=True)
@@ -40,10 +36,6 @@ class ReservationSerializer(ReservationValidationMixin, serializers.ModelSeriali
             'number_of_people'
         )
 
-    def create(self, validated_data):
-        validated_data["reserved_by"] = self.context["request"].user
-        return super().create(validated_data)
-
     def validate(self, attrs):
         location = attrs.get("location")
         start = attrs.get("start_date")
@@ -52,7 +44,7 @@ class ReservationSerializer(ReservationValidationMixin, serializers.ModelSeriali
         self.validate_dates(start, end)
         self.validate_capacity(num_people, location)
         if self.validate_overlap(location, start, end):
-            raise serializers.ValidationError({"non_fiel_errors": "Location not available at the selected date."})
+            raise serializers.ValidationError({"non_field_errors": "Location not available at the selected date."})
         
         return attrs      
 
@@ -85,6 +77,6 @@ class ReservationUpdateSerializer(ReservationValidationMixin, serializers.ModelS
         self.validate_dates(start, end)
         self.validate_capacity(num_people, location)
         if self.validate_overlap(location, start, end, exclude_id=self.instance.reservation_id):
-            raise serializers.ValidationError({"non_fiel_errors": "Location not available at the selected date."})
+            raise serializers.ValidationError({"non_field_errors": "Location not available at the selected date."})
         
         return attrs
