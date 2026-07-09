@@ -7,6 +7,19 @@ def api_client():
     return APIClient()
 
 
+@pytest.fixture(autouse=True)
+def test_settings(settings):
+    settings.CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
+    }
+    settings.REST_FRAMEWORK = {
+        **settings.REST_FRAMEWORK,
+        "DEFAULT_THROTTLE_CLASSES": [],
+    }
+
+
 @pytest.fixture
 def user_factory(db):
     from users.models import User
