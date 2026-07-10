@@ -4,7 +4,7 @@ from .serializers import RegisterSerializer, CustomObtainPairSerializer, Profile
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .tasks import send_register_confirmation
+from .services import UserNotificationService
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomObtainPairSerializer
@@ -16,7 +16,8 @@ class RegisterView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         user = serializer.save()
-        send_register_confirmation.delay(user.first_name, user.email)
+        UserNotificationService.send_account_confirmation(user=user)
+
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]

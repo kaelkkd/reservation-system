@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from users.models import User, CountryChoices
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -9,7 +9,7 @@ class Location(models.Model):
     name = models.CharField(max_length=200, blank=False)
     address_line = models.CharField(max_length=250, blank=False)
     country = models.CharField(choices=CountryChoices.choices, blank=False)
-    capacity = models.IntegerField(validators=[MaxValueValidator(15)], blank=False)
+    capacity = models.IntegerField(validators=[MaxValueValidator(15), MinValueValidator(1)], blank=False)
     is_available = models.BooleanField(default=True, blank=False)
 
     def __str__(self):
@@ -26,5 +26,4 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"{self.location} reserved from {self.start_date} to {self.end_date}."
-
 

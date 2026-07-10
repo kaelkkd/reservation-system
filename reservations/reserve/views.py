@@ -3,26 +3,16 @@ from .models import Location, Reservation
 from .filters import LocationFilter
 from .serializers import LocationSerializer, ReservationSerializer, ReservationUpdateSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.core.cache import cache
-from .tasks import send_reservation_confirmation, send_cancellation_confirmation
+from .repositories import LocationRepository
+from .services import ReservationService
 
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.order_by('pk')
     serializer_class = LocationSerializer
     filterset_class = LocationFilter
 
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-    
     def get_queryset(self):
-        qs = cache.get("locations_qs")
-        if qs is None:
-            qs = Location.objects.order_by("pk")
-            cache.set("locations_qs", qs, 60 * 15)
-        
-        return qs
+        return LocationRepository.get_ordered()
 
     def get_permissions(self):
         if self.request.method in ["PUT", "PATCH", "DELETE"]:
@@ -48,8 +38,8 @@ class ReservationViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         reservation = serializer.save(reserved_by=self.request.user)
-        send_reservation_confirmation.delay(reservation.reservation_id, self.request.user.email)
+        ReservationService.confirm_reservation(reservation)
 
     def perform_destroy(self, instance):
-        send_cancellation_confirmation(instance.reservation_id, instance.reserved_by.email)
+        ReservationService.confirm_cancellation(instance)
         instance.delete()

@@ -1,5 +1,5 @@
 import django_filters
-from reserve.models import Location, Reservation
+from reserve.models import Location
 
 class LocationFilter(django_filters.FilterSet):
     class Meta:
